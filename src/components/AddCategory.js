@@ -1,21 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Image } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import CategoryModel from '../models/CategoryModel';
 
 const AddCategory = ({ navigation, route }) => {
     const [categoryName, setCategoryName] = useState('');
     const [imageURL, setImageURL] = useState('');
-
-    const handlePickImage = () => {
-        // Launch the image library to pick an image
-        launchImageLibrary({ mediaType: 'photo' }, response => {
-            if (!response.didCancel) {
-                // Image picked successfully, update imageURL state
-                setImageURL(response.uri);
-            }
-        });
-    };
 
     const handleAddCategory = () => {
         // Validate input
@@ -39,17 +28,46 @@ const AddCategory = ({ navigation, route }) => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
+                style={styles.input}
                 placeholder="Category Name"
                 value={categoryName}
                 onChangeText={setCategoryName}
             />
-            <Button title="Pick Image" onPress={handlePickImage} />
-            {imageURL !== '' && <Image source={{ uri: imageURL }} style={{ width: 200, height: 200 }} />}
-            <Button title="Add Category" onPress={handleAddCategory} />
+            <TextInput
+                style={styles.input}
+                placeholder="Category Image URL"
+                value={imageURL}
+                onChangeText={setImageURL}
+            />
+            <Button
+                title="Add Category"
+                onPress={handleAddCategory}
+                style={styles.button}
+            />
         </View>
     );
 };
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    input: {
+        height: 40,
+        borderColor: 'black',
+        borderWidth: 5,
+        marginBottom: 30,
+        padding: 10,
+        width: '80%',
+    },
+    button: {
+        width: '80%',
+        marginTop: 10,
+    },
+});
 export default AddCategory;

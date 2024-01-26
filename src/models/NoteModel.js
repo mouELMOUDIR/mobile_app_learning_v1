@@ -1,9 +1,10 @@
 class NoteModel {
-    constructor(NoteID, Content, UserID, ObjectID) {
+    constructor(NoteID, Content, ObjectID = null, CategoryID,title) {
         this.NoteID = NoteID;
         this.Content = Content;
-        this.UserID = UserID;
         this.ObjectID = ObjectID;
+        this.CategoryID = CategoryID;
+        this.title = title;
     }
 }
 

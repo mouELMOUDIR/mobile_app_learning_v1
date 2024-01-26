@@ -3,7 +3,7 @@ import { View, TextInput, Button,StyleSheet } from 'react-native';
 import ObjectModel from '../models/ObjectModel';
 
 const AddObject = ({ navigation, route }) => {
-    const { category } = route.params;
+    const { parentObject, categoryID } = route.params;
     const [objectName, setObjectName] = useState('');
     const [imageUri, setImageUri] = useState('');
     const [audioUri, setAudioUri] = useState('');
@@ -16,8 +16,8 @@ const AddObject = ({ navigation, route }) => {
         }
 
         // Retrieve the category ID from the route params
-        const categoryId = category.CategoryID;
-        const ParentObjectID = category.parentObjectID;
+        const categoryId = categoryID;
+
 
 
         // Create a new object object with the CategoryID
@@ -27,14 +27,14 @@ const AddObject = ({ navigation, route }) => {
             categoryId,
             imageUri,
             audioUri,
-            ParentObjectID,
+            parentObject?.id,
 
 
         );
 
         // Call the onObjectAdd function passed through route params
         route.params.onObjectAdd(newObject);
-        console.log('Received category:', category);
+        console.log('Received category:', parentObject);
         console.log('Extracted categoryId:', categoryId);
 
         // Navigate back to ObjectList
@@ -63,12 +63,14 @@ const AddObject = ({ navigation, route }) => {
                 onChangeText={setAudioUri}
             />
             <Button 
-                title="Add Object" 
-                onPress={handleAddObject} 
-                style={styles.button} />
+                title="Add Object"
+                onPress={handleAddObject}
+                style={styles.button}
+             />
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {

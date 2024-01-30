@@ -9,6 +9,8 @@ import ObjectDetails from '../components/ObjectDetails';
 import AddObjectInObject from '../components/AddObjectInObject';
 import NoteList from '../components/NoteList';
 import NoteInputModal from '../components/NoteInputModal';
+import NoteListForObject from '../components/NoteListForObject';
+import NoteInputModalForObject from '../components/NoteInputModalForObject';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +75,16 @@ const AppNavigator = () => {
             <Stack.Screen
                 name="NoteInputModal"
                 component={NoteInputModal}
+                options={{ headerShown: true, headerTitle: 'Note' }}
+            />
+            <Stack.Screen
+                name="NoteListForObject"
+                component={NoteListForObject}
+                options={{ headerShown: true, headerTitle: 'Note' }}
+            />
+            <Stack.Screen
+                name="NoteInputModalForObject"
+                component={NoteInputModalForObject}
                 options={{ headerShown: true, headerTitle: 'Note' }}
             />
         </Stack.Navigator>

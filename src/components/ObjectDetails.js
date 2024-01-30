@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 const ObjectDetails = ({ route, navigation }) => {
-    const { parentObject } = route.params;
+    const { parentObject,object } = route.params;
     const [objects, setObjects] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -106,6 +106,11 @@ const ObjectDetails = ({ route, navigation }) => {
         }
     }, []);
 
+    const handleNote = (object) => {
+        navigation.navigate('NoteListForObject', { object });
+        console.log(object.id);
+    };
+
     
 
     const renderObjects = (parentObject) => {
@@ -134,7 +139,6 @@ const ObjectDetails = ({ route, navigation }) => {
         }
     };
 
-    const handleNote = useCallback(async (newCategory) => { })
 
     const renderItem = ({ item }) => {
         console.log('Rendering Item:', item);
@@ -146,23 +150,21 @@ const ObjectDetails = ({ route, navigation }) => {
                 <Image source={{ uri: item.ImageUri }} style={styles.objectImage} />
                 <Text style={styles.objectName}>{item.Name}</Text>
                 <TouchableOpacity
-                    onPress={() => handleNote(item.id)}
+                    onPress={() => handleNote(item)} // Pass the item to handleNote
+                    style={styles.noteButton}
                 >
                     <Feather name="file-text" size={24} color="black" />
-                    {/* Adjust the name, size, and color as needed */}
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => handleDeleteObject(item.id)}
                 >
                     <Feather name="trash-2" size={24} color="red" />
-                    {/* Adjust the name, size, and color as needed */}
                 </TouchableOpacity>
             </TouchableOpacity>
         );
     };
 
     const handleCategoryPress = (category) => {
-        // Assuming you have the hierarchy information available
         const hierarchy = category.hierarchy || [];
         hierarchy.push(category.name);
 

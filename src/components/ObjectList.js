@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 const ObjectList = ({ route, navigation }) => {
-    const { category } = route.params;
+    const { category,object } = route.params;
     const [objects, setObjects] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -129,7 +129,10 @@ const ObjectList = ({ route, navigation }) => {
         }
     };
 
-    const handleNote = useCallback(async (newCategory) => { })
+    const handleNote = (object) => {
+        navigation.navigate('NoteListForObject', { object });
+        console.log(object.id);
+    };
 
     const renderItem = ({ item }) => {
         console.log('Rendering Item:', item);
@@ -141,7 +144,8 @@ const ObjectList = ({ route, navigation }) => {
                 <Image source={{ uri: item.ImageUri }} style={styles.objectImage} />
                 <Text style={styles.objectName}>{item.Name}</Text>
                 <TouchableOpacity
-                    onPress={() => handleNote(item.id)}
+                    onPress={() => handleNote(item)} // Pass the item to handleNote
+                    style={styles.noteButton}
                 >
                     <Feather name="file-text" size={24} color="black" />
                     {/* Adjust the name, size, and color as needed */}

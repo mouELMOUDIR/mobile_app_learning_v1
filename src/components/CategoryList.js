@@ -112,7 +112,7 @@ const CategoryList = () => {
 
     const handleObjectsPress = (category) => {
         // Navigate to the ObjectList component with the selected category
-        navigation.navigate('ObjectList', { category });
+        navigation.navigate('ObjectList', { category }, { categoryName: category.name });
         console.log(category.id);
     };
 

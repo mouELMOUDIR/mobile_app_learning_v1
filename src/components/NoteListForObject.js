@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import SearchBar from './Searchbar';
 import RoundIconBtn from './RoundIconBtn';
-import NoteInputModal from './NoteInputModal';
-import { AntDesign } from '@expo/vector-icons'; // Import the AntDesign icons
+import NoteInputModalForObject from './NoteInputModalForObject';
+import { AntDesign } from '@expo/vector-icons';
 
-const NoteList = ({ route, navigation }) => {
-    const { category } = route.params;
+const NoteListForObject = ({ route, navigation }) => {
+    const { object } = route.params;
     const [notes, setNotes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
@@ -14,7 +14,7 @@ const NoteList = ({ route, navigation }) => {
 
     useEffect(() => {
         fetchNotes();
-    }, [category.id]);
+    }, [object.id]);
 
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const NoteList = ({ route, navigation }) => {
 
     const fetchNotes = async () => {
         try {
-            const response = await fetch(`http://192.168.0.157:3000/getNotesByCategoryID/${category.id}`);
+            const response = await fetch(`http://192.168.0.157:3000/getNotesByObjectID/${object.id}`);
             const data = await response.json();
             if (Array.isArray(data)) {
                 setNotes(data);
@@ -34,28 +34,11 @@ const NoteList = ({ route, navigation }) => {
             console.error('Error fetching notes:', error);
         }
     };
-    
-    const fetchNotesByObject = async (objectID) => {
-        try {
-            console.log('objectID:', objectID);
-            const response = await fetch(`http://192.168.0.157:3000/getNotesByObjectID/${objectID}`);
-            const data = await response.json();
-            console.log('API Response:', data); // Log the response
-            if (Array.isArray(data)) {
-                setObjects(data);
-                return data;
-            } else {
-                console.error('Invalid server response format:', data);
-            }
-        } catch (error) {
-            console.error('Error fetching notes:', error);
-        }
-    };
+
 
     const handleOnSubmit = async (title, Content) => {
         try {
             if (selectedNote) {
-                // Update existing note
                 const response = await fetch(`http://192.168.0.157:3000/updateNote/${selectedNote.NoteID}`, {
                     method: 'PUT',
                     headers: {
@@ -71,14 +54,14 @@ const NoteList = ({ route, navigation }) => {
                     throw new Error('Error updating note');
                 }
             } else {
-                const response = await fetch('http://192.168.0.157:3000/addNote', {
+                const response = await fetch('http://192.168.0.157:3000/addNoteForObject', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         Content: Content,
-                        CategoryID: category.id,
+                        ObjectID: object.id,
                         title: title,
                     }),
                 });
@@ -156,7 +139,7 @@ const NoteList = ({ route, navigation }) => {
                 antIconName='plus'
                 style={styles.addBtn}
             />
-            <NoteInputModal
+            <NoteInputModalForObject
                 visible={modalVisible}
                 onClose={handleCloseModal}
                 onSubmit={handleOnSubmit}
@@ -192,4 +175,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NoteList;
+export default NoteListForObject;
